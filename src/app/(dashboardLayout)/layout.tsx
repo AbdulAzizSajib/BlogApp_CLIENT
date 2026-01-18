@@ -1,5 +1,4 @@
-
-import { AppSidebar } from "@/components/layout/app-sidebar";
+import { AppSidebar } from '@/components/layout/app-sidebar';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,19 +6,26 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
+} from '@/components/ui/breadcrumb';
+import { Separator } from '@/components/ui/separator';
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar";
-import React from "react";
+} from '@/components/ui/sidebar';
+import React from 'react';
 
-export default function DashboardLayout({children}: {children: React.ReactNode}) {
+export default function DashboardLayout({
+  admin,
+  user,
+}: {
+  admin: React.ReactNode;
+  user: React.ReactNode;
+}) {
+  const userInfo = { role: 'user' };
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar user={userInfo} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
@@ -42,7 +48,7 @@ export default function DashboardLayout({children}: {children: React.ReactNode})
           </Breadcrumb>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
-          {children}
+          {userInfo.role === 'admin' ? admin : user}
         </div>
       </SidebarInset>
     </SidebarProvider>
