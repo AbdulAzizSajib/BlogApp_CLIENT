@@ -1,9 +1,9 @@
-import { authClient } from '@/lib/auth-client';
+import { userService } from '@/services/user.service';
 
 export default async function Home() {
-  const session = await authClient.getSession();
+  const { data, error } = await userService.getSession();
 
-  console.log('Session:', session);
+  console.log(data, error);
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <h2>This is the Home page</h2>
