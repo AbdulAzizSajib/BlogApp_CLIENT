@@ -1,0 +1,39 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { userService } from './services/user.service';
+import { fa } from 'zod/v4/locales';
+import { Roles } from './constants/roles';
+
+export async function proxy(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+  let isAuthenticated = false;
+  let isAdmin = false;
+  const { data } = await userService.getSession();
+
+  if (data) {
+    isAuthenticated = true;
+    isAdmin = data.user.role === Roles.ADMIN;
+  }
+
+  if (!isAuthenticated) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+  if (isAdmin && pathname.startsWith('/dashboard')) {
+    return NextResponse.redirect(new URL('/admin-dashboard', request.url));
+  }
+  if (!isAdmin && pathname.startsWith('/admin-dashboard')) {
+    return NextResponse.redirect(new URL('/dashboard', request.url));
+  }
+  console.log('Data in proxy middleware:', data);
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: [
+    '/dashboard',
+    '/dashboard/:path*',
+    '/login',
+    '/admin-dashboard',
+    '/admin-dashboard/:path*',
+  ],
+};

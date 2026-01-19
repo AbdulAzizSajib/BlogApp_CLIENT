@@ -1,7 +1,5 @@
-import React from 'react'
+import React from 'react';
 
 export default function UserDashboardPage() {
-  return (
-    <div>User Dashboard Page for All</div>
-  )
+  return <div>User Dashboard</div>;
 }

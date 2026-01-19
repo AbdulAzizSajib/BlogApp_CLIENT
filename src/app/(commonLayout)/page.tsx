@@ -1,12 +1,18 @@
-import { userService } from '@/services/user.service';
+import BlogCard from '@/components/modules/homepage/BlogCard';
+import { blogService } from '@/services/blog.service';
+import { BlogPost } from '@/types';
+// import { userService } from '@/services/user.service';
 
 export default async function Home() {
-  const { data, error } = await userService.getSession();
+  // const { data, error } = await userService.getSession();
 
-  console.log(data, error);
+  const { data } = await blogService.getBlogPosts();
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <h2>This is the Home page</h2>
+    <div className="mx-auto grid max-w-7xl grid-cols-3 gap-6 px-4">
+      {data?.data?.data?.map((post: BlogPost) => (
+        <BlogCard key={post.id} post={post} />
+      ))}
     </div>
   );
 }
