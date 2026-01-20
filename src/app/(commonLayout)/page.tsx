@@ -6,7 +6,16 @@ import { BlogPost } from '@/types';
 export default async function Home() {
   // const { data, error } = await userService.getSession();
 
-  const { data } = await blogService.getBlogPosts();
+  const { data } = await blogService.getBlogPosts(
+    {
+      isFeatured: true,
+      search: '',
+    },
+    {
+      cache: 'no-cache',
+      revalidate: 10,
+    }
+  );
 
   return (
     <div className="mx-auto grid max-w-7xl grid-cols-3 gap-6 px-4">
