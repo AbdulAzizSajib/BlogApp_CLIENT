@@ -8,7 +8,7 @@ export default async function Home() {
 
   const { data } = await blogService.getBlogPosts(
     {
-      isFeatured: true,
+      isFeatured: undefined,
       search: '',
     },
     {
@@ -16,6 +16,7 @@ export default async function Home() {
       revalidate: 10,
     }
   );
+  console.log('data------------>', data);
 
   return (
     <div className="mx-auto grid max-w-7xl grid-cols-3 gap-6 px-4">
