@@ -1,8 +1,9 @@
 import { blogService } from '@/services/blog.service';
+import { BlogPost, Comment } from '@/types';
 import React from 'react';
 
 /* ---------- Comment Item (Recursive) ---------- */
-function CommentItem({ comment }: { comment: any }) {
+function CommentItem({ comment }: { comment: Comment }) {
   return (
     <div className="mt-4 border-l pl-4">
       <div className="rounded-md bg-gray-50 p-3">
@@ -16,7 +17,7 @@ function CommentItem({ comment }: { comment: any }) {
       {/* Replies */}
       {comment.replies?.length > 0 && (
         <div className="mt-2 space-y-3">
-          {comment.replies.map((reply: any) => (
+          {comment.replies.map((reply: Comment) => (
             <CommentItem key={reply.id} comment={reply} />
           ))}
         </div>
@@ -26,6 +27,16 @@ function CommentItem({ comment }: { comment: any }) {
 }
 
 /* ---------- Blog Details Page ---------- */
+
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  const { data } = await blogService.getBlogPosts();
+  return data?.data?.data
+    ?.map((blog: BlogPost) => ({ id: blog.id }))
+    .splice(0, 3);
+}
+
 export default async function BlogsDetails({
   params,
 }: {
@@ -34,6 +45,16 @@ export default async function BlogsDetails({
   const { id } = await params;
   const { data } = await blogService.getBlogById(id);
 
+  // const { data: postsData } = await blogService.getBlogPosts();
+
+  // console.log(
+  //   'data------------------ :',
+  //   data,
+  //   'postData-------------- : ',
+  //   postsData
+  // );
+
+  // Check if the data is of type Post, otherwise handle the error
   if (!data) return <div>Blog not found</div>;
 
   return (
@@ -81,7 +102,7 @@ export default async function BlogsDetails({
         </h2>
 
         <div className="space-y-4">
-          {data.comments.map((comment: any) => (
+          {data.comments.map((comment: Comment) => (
             <CommentItem key={comment.id} comment={comment} />
           ))}
         </div>

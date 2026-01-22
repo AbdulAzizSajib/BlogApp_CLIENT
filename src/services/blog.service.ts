@@ -64,7 +64,7 @@ export const blogService = {
         error: null,
       };
     } catch (error) {
-      console.log(error);
+      return { data: null, error: error };
     }
   },
 };

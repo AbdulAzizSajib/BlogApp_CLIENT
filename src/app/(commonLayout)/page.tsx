@@ -12,11 +12,9 @@ export default async function Home() {
       search: '',
     },
     {
-      cache: 'no-cache',
-      revalidate: 10,
+      cache: 'no-store',
     }
   );
-  console.log('data------------>', data);
 
   return (
     <div className="mx-auto grid max-w-7xl grid-cols-3 gap-6 px-4">
